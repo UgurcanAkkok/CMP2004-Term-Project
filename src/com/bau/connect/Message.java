@@ -34,21 +34,21 @@ public class Message {
      * Message Format: UE11#<OPERATION>#[ ARGUMENT1 ]#[ ARGUMENT2 ]#[...]#11EU
      * Example Message: UE11#LectureStart#41287#11EU
      */
-    Message(String data) {
+    Message(String data) throws InvalidMessageException {
         var messageArray = List.of(data.split(SEPERATOR));
         if ((messageArray.get(0) != PACKET_START)
                 || (messageArray.get(messageArray.size() - 1) != PACKET_END)) {
             LOGGER.log(Level.WARNING, "We have an invalid message, " + messageArray.toString());
         } else {
-            /*
-             * After checking if message is from correct source, removes the unneccessary
+            /* After checking if message is from correct source, removes the unneccessary
              * parts
              */
             messageArray.remove(0);
             messageArray.remove(messageArray.size() - 1);
+            throw new InvalidMessageException();
         }
         if (checkOperation(messageArray.get(0)) == false) {
-            // TODO throw a custom error
+            throw new InvalidMessageException(data);
         } else {
             operation = messageArray.get(0);
             arguments = messageArray.subList(1, messageArray.size());
