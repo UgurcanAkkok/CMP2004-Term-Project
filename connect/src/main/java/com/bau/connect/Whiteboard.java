@@ -1,5 +1,6 @@
 package com.bau.connect;
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Whiteboard
@@ -12,7 +13,7 @@ public interface Whiteboard {
 
     public void drawLine(Color c, Float x1, Float y1, Float x2, Float y2);
 
-	public void drawRect(Color c, Float x, Float y, Float w, Float h) {
+	public void drawRect(Color c, Float x, Float y, Float w, Float h);
     
-	public void drawOval(Color c, Float x, Float y, Float w, Float h) {
+	public void drawOval(Color c, Float x, Float y, Float w, Float h);
 }
