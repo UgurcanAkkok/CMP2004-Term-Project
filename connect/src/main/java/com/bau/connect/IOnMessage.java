@@ -1,3 +1,4 @@
+package com.bau.connect;
 import java.net.Socket;
 
 public interface IOnMessage {

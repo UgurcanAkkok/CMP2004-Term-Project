@@ -1,3 +1,4 @@
+package com.bau.connect;
 import java.util.List;
 
 public class Lecture {

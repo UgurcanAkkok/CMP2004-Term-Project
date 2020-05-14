@@ -1,3 +1,4 @@
+package com.bau.connect;
 import java.util.ArrayList;
 
 public class Chat {

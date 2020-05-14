@@ -1,3 +1,4 @@
+package com.bau.connect;
 public class InvalidMessageException extends Exception{
     /* Thrown when the message used in communication 
      * is malformatted, has unexpected parts etc.
