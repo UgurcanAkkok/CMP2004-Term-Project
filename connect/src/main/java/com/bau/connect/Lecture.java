@@ -33,7 +33,7 @@ public class Lecture {
     }
 
     public void removeUser(String name) {
-        this.users.removeIf(u -> (u.getUsername() == name));
+        this.users.removeIf(u -> (u.getUsername().equals(name)));
     }
 
     public void setName(String name) {
@@ -53,6 +53,6 @@ public class Lecture {
     }
 
     public Boolean checkPassword(String password) {
-        return this.password == password;
+        return (this.password == null ? password == null : this.password.equals(password));
     }
 }
