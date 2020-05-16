@@ -1,13 +1,18 @@
 package com.bau.connect;
 
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Server implements IOnMessage {
 
@@ -64,14 +69,17 @@ public class Server implements IOnMessage {
 			username = message.getarguments().get(0);
 			var pass = message.arguments.get(1);
 			if (lecture.checkPassword(pass)) {
-				lecture.addUser(new User(inet, username));
-			} else {
-				try {
-					try ( java.io.DataOutputStream stream = new DataOutputStream(client.getOutputStream())) {
-						stream.writeUTF(Message.joinFailure(username));
-					}
+				lecture.addUser(new User(client, username));
+				try (var stream = new DataOutputStream(client.getOutputStream())) {
+					stream.writeUTF(Message.joinSuccess(username));
 				} catch (IOException e) {
-					LOGGER.log(Level.WARNING, "Cant inform the client about the invalid password");
+					LOGGER.log(Level.WARNING, "Cant inform the client about the correct password", e);
+				}
+			} else {
+				try (java.io.DataOutputStream stream = new DataOutputStream(client.getOutputStream())) {
+					stream.writeUTF(Message.joinFailure(username));
+				} catch (IOException e) {
+					LOGGER.log(Level.WARNING, "Cant inform the client about the invalid password", e);
 				}
 			}
 			break;
@@ -84,10 +92,11 @@ public class Server implements IOnMessage {
 			username = args.get(0);
 			var body = String.join(Message.SEPERATOR, args.subList(1, args.size()));
 			lecture.chat.addEntry(username, body);
+			/* TODO: send chat messages back to all users */
 			break;
 		case Message.INVALID_MESSAGE:
 			var msg = message.getarguments();
-			LOGGER.log(Level.SEVERE, "This is an invalid message: {0}", msg);
+			LOGGER.log(Level.SEVERE, "This is an invalid message we sent: {0}", msg);
 		default:
 			LOGGER.log(Level.WARNING, "Invalid operation code: {0} ", message.operation);
 			break;
@@ -95,4 +104,34 @@ public class Server implements IOnMessage {
 	}
 
 	/* private void sendMessage(Socket client */
+	public void sendPolygon(Integer id, Color c, ArrayList<Float> x, ArrayList<Float> y) {
+		broadCast(Message.shapePolygon(id, c, x, y));
+	}
+
+	public void sendText(Integer id, Color c, String s, Integer i, Float x, Float y, String text) {
+		broadCast(Message.shapeText(id, c, s, i, x, y, text));
+	}
+
+	public void sendLine(Integer id, Color c, Float x1, Float y1, Float x2, Float y2) {
+		broadCast(Message.shapeLine(id, c, x1, y1, x2, y2));
+	}
+
+	public void sendRect(Integer id, Color c, Float x, Float y, Float w, Float h) {
+		broadCast(Message.shapeRect(id, c, x, y, w, h));
+	}
+
+	public void sendOval(Integer id, Color c, Float x, Float y, Float w, Float h) {
+		broadCast(Message.shapeOval(id, c, x, y, w, h));
+	}
+
+	public void broadCast(String msg) {
+		lecture.getUsers().forEach((User u) -> {
+			try {
+				DataOutputStream dos = new DataOutputStream(u.socket.getOutputStream());
+				dos.writeUTF(msg);
+			} catch (IOException ex) {
+				LOGGER.log(Level.SEVERE, null, ex);
+			}
+		});
+	}
 }
