@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
-import javax.swing.text.Style;
 
 public class Message {
 
@@ -23,6 +22,8 @@ public class Message {
 	public static final String LECTURE_END = "LectureEnd";
 	public static final String JOIN_FAILURE = "JoinFailure";
 	/* UE11#JoinFailure#USERNAME#11EU */
+	public static final String JOIN_SUCCESS = "JoinSuccess";
+	/* UE11#JoinSuccess#USERNAME#11EU */
 	public static final String INVALID_MESSAGE = "InvalidMessage";
 	/* UE11#InvalidMessage#Message#11EU */
 	public static final String ADDSHAPE = "AddShape";
@@ -38,7 +39,7 @@ public class Message {
 	/* UE11#AddShape#ID#Text#COLOR#STYLE#SIZE#X,Y#TEXT#11EU */
 	public static final String REMOVESHAPE = "RemoveShape";
 	public static final String CHAT = "Chat";
-	/* UE11#Chat#USERNAME#MESSAGE BODY#11EU */
+	/** UE11#Chat#USERNAME#MESSAGE BODY#11EU */
 
 	public static final List<String> opList = List.of(LECTURE_JOIN, LECTURE_END, LECTURE_LEAVE,
 			LECTURE_START, ADDSHAPE, REMOVESHAPE);
@@ -54,10 +55,9 @@ public class Message {
 		return pack(ADDSHAPE + SEPERATOR + id + SEPERATOR + s);
 	}
 
-	public String shapeText(Integer id, Color c, String s, Integer size, Float x, Float y, String text){
+	public static String shapeText(Integer id, Color c, String style, Integer size, Float x, Float y, String text){
 		String name = TEXT;
 		String color = String.valueOf(c);
-		String style = s;
 		String sizeString = String.valueOf(size);
 		String coor = x.toString() + "," + y.toString();
 		
@@ -65,7 +65,7 @@ public class Message {
 				
 		return shape(String.valueOf(id), temp);
 	}
-	public String shapePolygon(Integer id, Color c, ArrayList<Float> xPoints, ArrayList<Float> yPoints) {
+	public static String shapePolygon(Integer id, Color c, ArrayList<Float> xPoints, ArrayList<Float> yPoints) {
 		String name = POLYGON;
 		String color = String.valueOf(c.getRGB());
 		ArrayList<String> xVec = new ArrayList();
@@ -82,7 +82,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public String shapeLine(Integer id, Color c, Float x1, Float y1, Float x2, Float y2) {
+	public static String shapeLine(Integer id, Color c, Float x1, Float y1, Float x2, Float y2) {
 		String name = LINE;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x1.toString(), y1.toString(), x2.toString(), y2.toString());
@@ -90,7 +90,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public String shapeRect(Integer id, Color c, Float x, Float y, Float w, Float h) {
+	public static String shapeRect(Integer id, Color c, Float x, Float y, Float w, Float h) {
 		String name = RECT;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x.toString(), y.toString(), w.toString(), h.toString());
@@ -98,7 +98,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public String shapeOval(Integer id, Color c, Float x, Float y, Float w, Float h) {
+	public static String shapeOval(Integer id, Color c, Float x, Float y, Float w, Float h) {
 		String name = OVAL;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x.toString(), y.toString(), w.toString(), h.toString());
@@ -123,6 +123,11 @@ public class Message {
 
 	public static String joinFailure(String user) {
 		var temp = String.join(SEPERATOR, JOIN_FAILURE, user);
+		return pack(temp);
+	}
+
+	public static String joinSuccess(String user) {
+		var temp = String.join(SEPERATOR, JOIN_SUCCESS, user);
 		return pack(temp);
 	}
 
