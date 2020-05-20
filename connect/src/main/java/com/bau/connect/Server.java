@@ -4,15 +4,12 @@ import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Server implements IOnMessage {
 
@@ -20,6 +17,10 @@ public class Server implements IOnMessage {
 	Integer port = 42328;
 	Lecture lecture;
 	static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+
+	public Server() throws IOException {
+		socket = new ServerSocket(port);
+	}
 
 	Runnable serve = new Runnable() {
 		@Override
@@ -31,20 +32,19 @@ public class Server implements IOnMessage {
 					String msgString = (String) stream.readUTF();
 					var msg = new Message(msgString);
 					onMessage(msg, client);
-					client.close();
 				} catch (IOException | InvalidMessageException e) {
 					LOGGER.log(Level.WARNING, e.toString());
-					continue;
 				}
 			}
 
 		}
 	};
 
-	public Server() throws IOException {
-		socket = new ServerSocket(port);
+	public void run(){
+		Thread serveThread = new Thread(serve);
+		serveThread.start();
 	}
-
+	
 	public void setLecture(Lecture lecture) {
 		this.lecture = lecture;
 	}
@@ -61,7 +61,6 @@ public class Server implements IOnMessage {
 	/* private void sendMessage(Socket client, Message */
 	@Override
 	public void onMessage(Message message, Socket client) {
-		var inet = client.getInetAddress();
 		List<String> args;
 		String username;
 		switch (message.operation) {
@@ -104,27 +103,28 @@ public class Server implements IOnMessage {
 	}
 
 	/* private void sendMessage(Socket client */
-	public void sendPolygon(Integer id, Color c, ArrayList<Float> x, ArrayList<Float> y) {
+	public void sendPolygon(Integer id, Color c, ArrayList<Double> x, ArrayList<Double> y) {
 		broadCast(Message.shapePolygon(id, c, x, y));
 	}
 
-	public void sendText(Integer id, Color c, String s, Integer i, Float x, Float y, String text) {
+	public void sendText(Integer id, Color c, String s, Integer i, Double x, Double y, String text) {
 		broadCast(Message.shapeText(id, c, s, i, x, y, text));
 	}
 
-	public void sendLine(Integer id, Color c, Float x1, Float y1, Float x2, Float y2) {
+	public void sendLine(Integer id, Color c, Double x1, Double y1, Double x2, Double y2) {
 		broadCast(Message.shapeLine(id, c, x1, y1, x2, y2));
 	}
 
-	public void sendRect(Integer id, Color c, Float x, Float y, Float w, Float h) {
+	public void sendRect(Integer id, Color c, Double x, Double y, Double w, Double h) {
 		broadCast(Message.shapeRect(id, c, x, y, w, h));
 	}
 
-	public void sendOval(Integer id, Color c, Float x, Float y, Float w, Float h) {
+	public void sendOval(Integer id, Color c, Double x, Double y, Double w, Double h) {
 		broadCast(Message.shapeOval(id, c, x, y, w, h));
 	}
 
 	public void broadCast(String msg) {
+		// TODO check if there lecture is not null 
 		lecture.getUsers().forEach((User u) -> {
 			try {
 				DataOutputStream dos = new DataOutputStream(u.socket.getOutputStream());

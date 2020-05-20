@@ -7,15 +7,15 @@ import java.util.ArrayList;
  * Client uses when it gets an add shape message
  */
 public interface Whiteboard {
-    public void addPolygon(Integer id, Color c, ArrayList<Float> x, ArrayList<Float> y);
+    public void addPolygon(Integer id, Color c, ArrayList<Double> x, ArrayList<Double> y);
 
-    public void addText(Integer id, Color c, String s, Integer i, Float x, Float y, String text);
+    public void addText(Integer id, Color c, String s, Integer i, Double x, Double y, String text);
 
-    public void addLine(Integer id, Color c, Float x1, Float y1, Float x2, Float y2);
+    public void addLine(Integer id, Color c, Double x1, Double y1, Double x2, Double y2);
 
-	public void addRect(Integer id, Color c, Float x, Float y, Float w, Float h);
+	public void addRect(Integer id, Color c, Double x, Double y, Double w, Double h);
     
-	public void addOval(Integer id, Color c, Float x, Float y, Float w, Float h);
+	public void addOval(Integer id, Color c, Double x, Double y, Double w, Double h);
 	
 	public void removeShape(Integer id);
 }

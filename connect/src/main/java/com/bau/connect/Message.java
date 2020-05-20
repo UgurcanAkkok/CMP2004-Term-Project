@@ -55,7 +55,7 @@ public class Message {
 		return pack(ADDSHAPE + SEPERATOR + id + SEPERATOR + s);
 	}
 
-	public static String shapeText(Integer id, Color c, String style, Integer size, Float x, Float y, String text){
+	public static String shapeText(Integer id, Color c, String style, Integer size, Double x, Double y, String text){
 		String name = TEXT;
 		String color = String.valueOf(c);
 		String sizeString = String.valueOf(size);
@@ -65,7 +65,7 @@ public class Message {
 				
 		return shape(String.valueOf(id), temp);
 	}
-	public static String shapePolygon(Integer id, Color c, ArrayList<Float> xPoints, ArrayList<Float> yPoints) {
+	public static String shapePolygon(Integer id, Color c, ArrayList<Double> xPoints, ArrayList<Double> yPoints) {
 		String name = POLYGON;
 		String color = String.valueOf(c.getRGB());
 		ArrayList<String> xVec = new ArrayList();
@@ -82,7 +82,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public static String shapeLine(Integer id, Color c, Float x1, Float y1, Float x2, Float y2) {
+	public static String shapeLine(Integer id, Color c, Double x1, Double y1, Double x2, Double y2) {
 		String name = LINE;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x1.toString(), y1.toString(), x2.toString(), y2.toString());
@@ -90,7 +90,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public static String shapeRect(Integer id, Color c, Float x, Float y, Float w, Float h) {
+	public static String shapeRect(Integer id, Color c, Double x, Double y, Double w, Double h) {
 		String name = RECT;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x.toString(), y.toString(), w.toString(), h.toString());
@@ -98,7 +98,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public static String shapeOval(Integer id, Color c, Float x, Float y, Float w, Float h) {
+	public static String shapeOval(Integer id, Color c, Double x, Double y, Double w, Double h) {
 		String name = OVAL;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x.toString(), y.toString(), w.toString(), h.toString());
@@ -144,7 +144,7 @@ public class Message {
      * Example Message: UE11#LectureStart#41287#11EU
 	 */
 	Message(String data) throws InvalidMessageException {
-		var messageArray = List.of(data.split(SEPERATOR));
+		ArrayList<String> messageArray = new ArrayList<>(List.of(data.split(SEPERATOR)));
 		if ((!messageArray.get(0).equals(PACKET_START))
 				|| (!messageArray.get(messageArray.size() - 1).equals(PACKET_END))) {
 			LOGGER.log(Level.WARNING, "We have an invalid message, {0}", messageArray.toString());
