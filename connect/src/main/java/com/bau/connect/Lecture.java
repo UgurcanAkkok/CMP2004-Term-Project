@@ -1,9 +1,9 @@
 package com.bau.connect;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Lecture {
     User host;
-    List<User> users;
+    ArrayList<User> users;
     Chat chat;
     String name = "";
     String password = "";
@@ -12,6 +12,7 @@ public class Lecture {
     Lecture(String name) {
         this.name = name;
         chat = new Chat();
+		users = new ArrayList<>();
     }
 
     public void setHost(User host) {
@@ -22,7 +23,7 @@ public class Lecture {
         return this.host;
     }
 
-    public List<User> getUsers() {
+    public ArrayList<User> getUsers() {
         return this.users;
     }
 
