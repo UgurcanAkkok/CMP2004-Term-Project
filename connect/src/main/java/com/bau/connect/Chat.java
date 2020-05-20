@@ -14,7 +14,8 @@ public class Chat {
 
     ArrayList<ChatMessage> entry;
 
-    Chat() {
+    public Chat() {
+		entry = new ArrayList<>();
         entry.add(new ChatMessage("System", "This is the start of an engaging class.."));
     }
 
