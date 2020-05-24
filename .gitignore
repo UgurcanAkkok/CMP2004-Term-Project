@@ -26,3 +26,10 @@ hs_err_pid*
 .vim/
 *.vim
 /connect/target/
+/connect/.settings/org.eclipse.jdt.core.prefs
+/connect/.settings/org.eclipse.m2e.core.prefs
+/connect/.project
+/connect/nb-configuration.xml
+/connect/.classpath
+/connect/.settings/org.eclipse.jdt.apt.core.prefs
+/connect/.settings/org.eclipse.core.resources.prefs
