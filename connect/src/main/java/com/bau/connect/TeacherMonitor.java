@@ -11,79 +11,78 @@ import java.util.logging.Logger;
 
 public class TeacherMonitor extends JFrame implements ActionListener {
 
-	public static int ourShapeCounter = 0;
-	public static DefaultListModel<String> l1 = new DefaultListModel<>();
-	JPanel ourBoard;
-	JMenuBar menuBar;
-	public static Shapes selectedShape = Shapes.RECTANGLE;
+    public static int ourShapeCounter = 0;
+    public static DefaultListModel<String> l1 = new DefaultListModel<>();
+    JPanel ourBoard;
+    JMenuBar menuBar;
+    public static Shapes selectedShape = Shapes.RECTANGLE;
 
-	public TeacherMonitor() {
-		super("Teacher Monitor");
-		setSize(new Dimension(800, 600));
-		JMenu menu = new JMenu("Shapes");
-		ButtonGroup group = new ButtonGroup();
-		JRadioButtonMenuItem item = new JRadioButtonMenuItem("Rectangle");
-		JRadioButtonMenuItem item2 = new JRadioButtonMenuItem("Circle");
-		JRadioButtonMenuItem item3 = new JRadioButtonMenuItem("Polygom");
-		JRadioButtonMenuItem item4 = new JRadioButtonMenuItem("Line");
-		item.setSelected(true);
-		group.add(item);
-		group.add(item2);
-		group.add(item3);
-		group.add(item4);
-		item.addActionListener(this);
-		item2.addActionListener(this);
-		item3.addActionListener(this);
-		item4.addActionListener(this);
-		menu.add(item);
-		menu.add(item2);
-		menu.add(item3);
-		menu.add(item4);
-		ourBoard = new MyBoard();
-		menuBar = new JMenuBar();
-		menuBar.add(menu);
-		this.getContentPane().add(ourBoard);
-		setJMenuBar(menuBar);
-		setVisible(true);
-		ChatScreen chatScreen = new ChatScreen();
-		Participants participants = new Participants();
+    public TeacherMonitor() {
+        super("Teacher Monitor");
+        setSize(new Dimension(800,600));
+        JMenu menu = new JMenu("Shapes");
+        ButtonGroup group = new ButtonGroup();
+        JRadioButtonMenuItem item = new JRadioButtonMenuItem("Rectangle");
+        JRadioButtonMenuItem item2 = new JRadioButtonMenuItem("Circle");
+        JRadioButtonMenuItem item3 = new JRadioButtonMenuItem("Polygom");
+        JRadioButtonMenuItem item4 = new JRadioButtonMenuItem("Line");
+        item.setSelected(true);
+        group.add(item);
+        group.add(item2);
+        group.add(item3);
+        group.add(item4);
+        item.addActionListener(this);
+        item2.addActionListener(this);
+        item3.addActionListener(this);
+        item4.addActionListener(this);
+        menu.add(item);
+        menu.add(item2);
+        menu.add(item3);
+        menu.add(item4);
+        ourBoard = new MyBoard();
+        menuBar = new JMenuBar();
+        menuBar.add(menu);
+        this.getContentPane().add(ourBoard);
+        setJMenuBar(menuBar);
+        setVisible(true);
+        new ChatScreen();
+        new Participants();
+    }
 
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
-		switch (e.getActionCommand()) {
-		case "Rectangle":
-			selectedShape = Shapes.RECTANGLE;
-			break;
-		case "Circle":
-			selectedShape = Shapes.CIRCLE;
-			break;
-		case "Polygom":
-			selectedShape = Shapes.POLYGOM;
-			break;
-		case "Line":
-			selectedShape = Shapes.LINE;
-			break;
-		default:
-			System.out.println("Error.");
-			break;
-		}
-		ourBoard.repaint();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getActionCommand());
+        switch(e.getActionCommand()) {
+            case "Rectangle":
+                selectedShape = Shapes.RECTANGLE;
+                break;
+            case "Circle":
+                selectedShape = Shapes.CIRCLE;
+                break;
+            case "Polygom":
+                selectedShape = Shapes.POLYGOM;
+                break;
+            case "Line":
+                selectedShape = Shapes.LINE;
+                break;
+            default:
+                System.out.println("Error.");
+                break;
+        }
+        ourBoard.repaint();
+    }
 }
 
 enum Shapes {
-	RECTANGLE, CIRCLE, POLYGOM, LINE
+    RECTANGLE,CIRCLE,POLYGOM,LINE
 }
 
 class MyShape {
     Shapes shapeType;
     ArrayList<Integer> x = new ArrayList<Integer>();
     ArrayList<Integer> y = new ArrayList<Integer>();
-
 	int id;
+
     public MyShape(Shapes shapeType, int x1, int y1, int x2, int y2) {
         this.shapeType = shapeType;
         x.add(x1);
@@ -107,7 +106,7 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
     private int counter = 0;
 	Server server;
 	Lecture lecture;
-	
+
     public MyBoard() {
         setPreferredSize(new Dimension(400,300));
         setSize(400,300);
@@ -148,7 +147,7 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
 				var dialogResult = JOptionPane.showConfirmDialog(null, "Could not initialize server, try again?");
 				if (dialogResult != JOptionPane.YES_OPTION) {
 					break;
-					}
+				}
 			}
 		}
     }
@@ -183,7 +182,20 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
             }
         }
 
-	}
+        g.setColor(Color.BLACK);
+        String s = "Count = " + String.valueOf(list.size());
+        int minutes = (counter / 60) % 60;
+        int seconds = counter % 60;
+        int hour = (counter / 60)/60;
+        String lectureTimeCounter = "Time : " + String.valueOf(hour) + ":" + String.valueOf(minutes) + ":" + String.valueOf(seconds);
+        g.drawString(s, this.getWidth()-20-g.getFontMetrics().stringWidth(s),20);
+        g.drawString(lectureTimeCounter, this.getWidth()-20-g.getFontMetrics().stringWidth(lectureTimeCounter),60);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("Clicked");
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -204,16 +216,21 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
         repaint();
     }
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		System.out.println("Released");
-		isClickingAlready = false;
-	}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        System.out.println("Released");
+        isClickingAlready=false;
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-	}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -226,8 +243,8 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
         }
     }
 
-	@Override
-	public void mouseExited(MouseEvent e) {
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 
@@ -254,16 +271,6 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
             repaint();
         }
     }
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
 }
 
 class ChatScreen extends JFrame implements KeyListener {
@@ -310,10 +317,10 @@ class Participants extends JFrame {
         super("Participants");
         setSize(new Dimension(320,240));
 
-		TeacherMonitor.l1.addElement("Ekin Öcal (Teacher)");
-		TeacherMonitor.l1.addElement("Ekin Öcal (Student)");
-		JList<String> list = new JList<>(TeacherMonitor.l1);
-		getContentPane().add(list);
-		setVisible(true);
-	}
+        TeacherMonitor.l1.addElement("Ekin Öcal (Teacher)");
+        TeacherMonitor.l1.addElement("Ekin Öcal (Student)");
+        JList<String> list = new JList<>(TeacherMonitor.l1);
+        getContentPane().add(list);
+        setVisible(true);
+    }
 }
