@@ -26,6 +26,14 @@ public class Lecture {
     public ArrayList<User> getUsers() {
         return this.users;
     }
+	
+	public ArrayList<String> getUserNames(){
+		ArrayList<String> temp = new ArrayList<>();
+		users.forEach((u) -> {
+			temp.add(u.getUsername());
+		});
+		return temp;
+	}
 
     public void addUser(User u) {
         /* TODO edit attendance file */
