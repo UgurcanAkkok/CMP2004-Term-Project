@@ -42,10 +42,10 @@ public class Message {
 	/** UE11#Chat#USERNAME#MESSAGE BODY#11EU */
 
 	public static final List<String> opList = List.of(LECTURE_JOIN, LECTURE_END, LECTURE_LEAVE,
-			LECTURE_START, ADDSHAPE, REMOVESHAPE);
+			LECTURE_START, ADDSHAPE, REMOVESHAPE, JOIN_FAILURE, JOIN_SUCCESS, INVALID_MESSAGE, CHAT);
 
 	String operation;
-	List<String> arguments;
+	ArrayList<String> arguments;
 
 	static String pack(String msg) {
 		return PACKET_START + SEPERATOR + msg + SEPERATOR + PACKET_END;
@@ -131,7 +131,7 @@ public class Message {
 		return pack(temp);
 	}
 
-	public List<String> getarguments() {
+	public ArrayList<String> getarguments() {
 		return this.arguments;
 	}
 
@@ -144,6 +144,7 @@ public class Message {
      * Example Message: UE11#LectureStart#41287#11EU
 	 */
 	Message(String data) throws InvalidMessageException {
+		LOGGER.info(data);
 		ArrayList<String> messageArray = new ArrayList<>(List.of(data.split(SEPERATOR)));
 		if ((!messageArray.get(0).equals(PACKET_START))
 				|| (!messageArray.get(messageArray.size() - 1).equals(PACKET_END))) {
@@ -155,13 +156,12 @@ public class Message {
 			 */
 			messageArray.remove(0);
 			messageArray.remove(messageArray.size() - 1);
-			throw new InvalidMessageException();
 		}
 		if (checkOperation(messageArray.get(0)) == false) {
 			throw new InvalidMessageException(data);
 		} else {
 			operation = messageArray.get(0);
-			arguments = messageArray.subList(1, messageArray.size());
+			arguments = new ArrayList<>(messageArray.subList(1, messageArray.size()));
 		}
 
 	}
@@ -173,7 +173,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return operation + arguments.toString();
+		return operation + " " + String.join(" ", arguments);
 	}
 
 }

@@ -32,8 +32,10 @@ public class Server implements IOnMessage {
 					String msgString = (String) stream.readUTF();
 					var msg = new Message(msgString);
 					onMessage(msg, client);
-				} catch (IOException | InvalidMessageException e) {
-					LOGGER.log(Level.WARNING, e.toString());
+				} catch (IOException e) {
+					LOGGER.log(Level.SEVERE, e.toString());
+				} catch (InvalidMessageException ex) {
+					LOGGER.log(Level.SEVERE, null, ex);
 				}
 			}
 
@@ -69,13 +71,15 @@ public class Server implements IOnMessage {
 			var pass = message.arguments.get(1);
 			if (lecture.checkPassword(pass)) {
 				lecture.addUser(new User(client, username));
-				try (var stream = new DataOutputStream(client.getOutputStream())) {
+				try {
+					var stream = new DataOutputStream(client.getOutputStream());
 					stream.writeUTF(Message.joinSuccess(username));
 				} catch (IOException e) {
 					LOGGER.log(Level.WARNING, "Cant inform the client about the correct password", e);
 				}
 			} else {
-				try (java.io.DataOutputStream stream = new DataOutputStream(client.getOutputStream())) {
+				try {
+					java.io.DataOutputStream stream = new DataOutputStream(client.getOutputStream());
 					stream.writeUTF(Message.joinFailure(username));
 				} catch (IOException e) {
 					LOGGER.log(Level.WARNING, "Cant inform the client about the invalid password", e);

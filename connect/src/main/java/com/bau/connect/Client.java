@@ -21,20 +21,22 @@ public class Client implements IOnMessage {
 	String username;
 	Chat chat;
 
-	public Client(String host, String username) throws IOException, UnknownHostException {
+	public Client(String host, String username, Whiteboard board) throws IOException, UnknownHostException {
 		/*
          * Create a client socket, may throw IOException or UnknownHostException if
          * Socket(addr,port) doesnt succeed.
 		 */
 		serverAddress = host;
 		this.username = username;
+		this.board = board;
 		socket = new Socket(serverAddress, serverPort);
 		chat = new Chat();
 	}
 
 	Runnable listen = () -> {
 		while (true) {
-			try (var dis = new DataInputStream(socket.getInputStream())) {
+			try {
+				var dis = new DataInputStream(socket.getInputStream());
 				var data = dis.readUTF();
 				Message msg = new Message(data);
 				if (msg.operation.equals(Message.LECTURE_END)) {
@@ -49,9 +51,9 @@ public class Client implements IOnMessage {
 	};
 
 	void send(String msg) throws IOException {
-		try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream())) {
-			dos.writeUTF(msg);
-		}
+		DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+		dos.writeUTF(msg);
+		
 	}
 
 	public Boolean joinLecture(String password) throws IOException {
