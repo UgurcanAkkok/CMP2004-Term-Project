@@ -136,6 +136,7 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
             }
         });
         thread.start();
+		// Start the server, assigning a lecture to it
 		while (true) {
 			try {
 				server = new Server();
@@ -219,8 +220,29 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
     @Override
     public void mouseReleased(MouseEvent e) {
         System.out.println("Released");
-        isClickingAlready=false;
-    }
+		var temp = list.get(list.size() - 1);
+		isClickingAlready = false;
+		Double x1,x2,y1,y2;
+		x1 = (double) temp.x.get(0);
+		x2 = (double) temp.x.get(1);
+		y1 = (double) temp.y.get(0);
+		y2 = (double) temp.y.get(1);
+		Double width = x1 - x2;
+		Double height = y1 - y2;
+		switch (temp.shapeType) {
+			case RECTANGLE:
+				server.sendRect(temp.id, Color.black, x1, y1, width, height);
+				break;
+			case CIRCLE:
+				server.sendOval(temp.id, Color.black, x1, y1, width, height);
+				break;
+			case LINE:
+				server.sendLine(temp.id, Color.black, x1, y1, x2, y2);
+				break;
+			default:
+				break;
+			}
+	}
 
     @Override
     public void mouseEntered(MouseEvent e) {
