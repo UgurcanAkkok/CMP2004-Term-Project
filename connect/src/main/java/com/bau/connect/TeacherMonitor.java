@@ -229,6 +229,14 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
 		y2 = (double) temp.y.get(1);
 		Double width = x1 - x2;
 		Double height = y1 - y2;
+		ArrayList<Double> x = new ArrayList<>();
+		temp.x.forEach((i) -> {
+			x.add((double) i);
+		});
+		ArrayList<Double> y = new ArrayList<>();
+		temp.y.forEach((i) -> {
+			y.add((double) i);
+		});
 		switch (temp.shapeType) {
 			case RECTANGLE:
 				server.sendRect(temp.id, Color.black, x1, y1, width, height);
@@ -239,6 +247,8 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
 			case LINE:
 				server.sendLine(temp.id, Color.black, x1, y1, x2, y2);
 				break;
+			case POLYGOM:
+				server.sendPolygon(temp.id, Color.black, x, y);
 			default:
 				break;
 			}
