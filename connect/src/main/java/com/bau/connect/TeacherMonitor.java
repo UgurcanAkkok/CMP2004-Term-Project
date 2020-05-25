@@ -104,8 +104,8 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
     private List<MyShape> list = new ArrayList<MyShape>();
     boolean isClickingAlready = false;
     private int counter = 0;
-	Server server;
-	Lecture lecture;
+	public static Server server;
+	public static Lecture lecture;
 
     public MyBoard() {
         setPreferredSize(new Dimension(400,300));
@@ -118,6 +118,7 @@ class MyBoard extends JPanel implements MouseListener, MouseMotionListener, KeyL
         requestFocus();
         setBackground(Color.WHITE);
 		lecture = new Lecture("CMP");
+		lecture.setTeacher("Ekin Öcal"); // TODO Ask for a name 
 		Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -348,10 +349,9 @@ class Participants extends JFrame {
     public Participants() {
         super("Participants");
         setSize(new Dimension(320,240));
-
-        TeacherMonitor.l1.addElement("Ekin Öcal (Teacher)");
-        TeacherMonitor.l1.addElement("Ekin Öcal (Student)");
-        JList<String> list = new JList<>(TeacherMonitor.l1);
+//        TeacherMonitor.l1.addElement("Ekin Öcal (Teacher)");
+//        TeacherMonitor.l1.addElement("Ekin Öcal (Student)");
+		JList<String> list = new JList<>(MyBoard.lecture.participants);
         getContentPane().add(list);
         setVisible(true);
     }
