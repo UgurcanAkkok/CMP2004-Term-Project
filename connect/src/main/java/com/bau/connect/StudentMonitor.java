@@ -20,6 +20,9 @@ public class StudentMonitor extends JFrame implements ActionListener {
         ourBoard = new MyBoard();
         this.getContentPane().add(ourBoard);
         setJMenuBar(menuBar);
+        JButton button = new JButton("Hand Rise Button");
+        
+        ourBoard.add(button);
         setVisible(true);
         new ChatScreen();
         new Participants();
