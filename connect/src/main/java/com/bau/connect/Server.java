@@ -10,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 public class Server implements IOnMessage {
 
@@ -100,6 +102,9 @@ public class Server implements IOnMessage {
 		case Message.INVALID_MESSAGE:
 			var msg = message.getarguments();
 			LOGGER.log(Level.SEVERE, "This is an invalid message we sent: {0}", msg);
+		case Message.RAISE_HAND:
+			username = message.getarguments().get(0);
+			JOptionPane.showMessageDialog(null, username + " raises hand!");
 		default:
 			LOGGER.log(Level.WARNING, "Invalid operation code: {0} ", message.operation);
 			break;

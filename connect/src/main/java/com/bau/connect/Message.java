@@ -26,6 +26,8 @@ public class Message {
 	/* UE11#JoinSuccess#USERNAME#11EU */
 	public static final String INVALID_MESSAGE = "InvalidMessage";
 	/* UE11#InvalidMessage#Message#11EU */
+	public static final String RAISE_HAND = "RaiseHand";
+	/* UE11#RaiseHand#Username#11EU*/
 	public static final String ADDSHAPE = "AddShape";
 	public static final String RECT = "Rect";
 	/* UE11#AddShape#ID#Rect#COLOR#X,Y,Width,Height#11EU */
@@ -41,7 +43,7 @@ public class Message {
 	public static final String CHAT = "Chat";
 	/** UE11#Chat#USERNAME#MESSAGE BODY#11EU */
 
-	public static final List<String> opList = List.of(LECTURE_JOIN, LECTURE_END, LECTURE_LEAVE,
+	public static final List<String> opList = List.of(LECTURE_JOIN, LECTURE_END, LECTURE_LEAVE, RAISE_HAND,
 			LECTURE_START, ADDSHAPE, REMOVESHAPE, JOIN_FAILURE, JOIN_SUCCESS, INVALID_MESSAGE, CHAT);
 
 	String operation;
@@ -113,6 +115,11 @@ public class Message {
 
 	public static String invalidMessage(Message message) {
 		var temp = String.join(SEPERATOR, INVALID_MESSAGE, message.toString());
+		return pack(temp);
+	}
+	
+	public static String raiseHand(String username){
+		var temp = String.join(SEPERATOR, RAISE_HAND, username);
 		return pack(temp);
 	}
 

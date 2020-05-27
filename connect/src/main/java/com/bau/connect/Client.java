@@ -74,7 +74,7 @@ public class Client implements IOnMessage {
 						+ " Can not determine if we are able to join");
 			}
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Can establish connection with the class:", e);
+			LOGGER.log(Level.SEVERE, "Can not establish connection with the class:", e);
 			throw e;
 		} catch (InvalidMessageException ex) {
 			LOGGER.log(Level.SEVERE, null, ex);
@@ -94,6 +94,15 @@ public class Client implements IOnMessage {
 					LOGGER.warning("Can not send chat message");
 				}
 			}
+		}
+	}
+	
+	public void raiseHand(){
+		var msg = Message.raiseHand(username);
+		try {
+			send(msg);
+		} catch (IOException ex) {
+			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
