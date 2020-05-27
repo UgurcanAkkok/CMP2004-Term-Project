@@ -57,7 +57,7 @@ public class Message {
 		return pack(ADDSHAPE + SEPERATOR + id + SEPERATOR + s);
 	}
 
-	public static String shapeText(Integer id, Color c, String style, Integer size, Double x, Double y, String text){
+	public static String shapeText(Integer id, Color c, String style, Integer size, Integer x, Integer y, String text){
 		String name = TEXT;
 		String color = String.valueOf(c);
 		String sizeString = String.valueOf(size);
@@ -67,15 +67,15 @@ public class Message {
 				
 		return shape(String.valueOf(id), temp);
 	}
-	public static String shapePolygon(Integer id, Color c, ArrayList<Double> xPoints, ArrayList<Double> yPoints) {
+	public static String shapePolygon(Integer id, Color c, ArrayList<Integer> xPoints, ArrayList<Integer> yPoints) {
 		String name = POLYGON;
 		String color = String.valueOf(c.getRGB());
-		ArrayList<String> xVec = new ArrayList();
+		ArrayList<String> xVec = new ArrayList<>();
 		xPoints.forEach((x) -> {
 			xVec.add(x.toString());
 		});
 		String xString = String.join(",", xVec);		
-		ArrayList<String> yVec = new ArrayList();
+		ArrayList<String> yVec = new ArrayList<>();
 		yPoints.forEach((y) -> {
 			yVec.add(y.toString());
 		});
@@ -84,7 +84,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public static String shapeLine(Integer id, Color c, Double x1, Double y1, Double x2, Double y2) {
+	public static String shapeLine(Integer id, Color c, Integer x1, Integer y1, Integer x2, Integer y2) {
 		String name = LINE;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x1.toString(), y1.toString(), x2.toString(), y2.toString());
@@ -92,7 +92,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public static String shapeRect(Integer id, Color c, Double x, Double y, Double w, Double h) {
+	public static String shapeRect(Integer id, Color c, Integer x, Integer y, Integer w, Integer h) {
 		String name = RECT;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x.toString(), y.toString(), w.toString(), h.toString());
@@ -100,7 +100,7 @@ public class Message {
 		return shape(String.valueOf(id), temp);
 	}
 
-	public static String shapeOval(Integer id, Color c, Double x, Double y, Double w, Double h) {
+	public static String shapeOval(Integer id, Color c, Integer x, Integer y, Integer w, Integer h) {
 		String name = OVAL;
 		String color = String.valueOf(c.getRGB());
 		String properties = String.join(",", x.toString(), y.toString(), w.toString(), h.toString());

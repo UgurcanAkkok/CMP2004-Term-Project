@@ -121,10 +121,10 @@ public class Client implements IOnMessage {
 				var id = Integer.valueOf(args.get(0));
 				var c = new Color(Integer.valueOf(args.get(2)));
 				var t = args.get(3).split(",");
-				var x = Double.valueOf(t[0]);
-				var y = Double.valueOf(t[1]);
-				var w = Double.valueOf(t[2]);
-				var h = Double.valueOf(t[3]);
+				var x = Integer.valueOf(t[0]);
+				var y = Integer.valueOf(t[1]);
+				var w = Integer.valueOf(t[2]);
+				var h = Integer.valueOf(t[3]);
 				board.addRect(id, c, x, y, w, h);
 				break;
 
@@ -132,34 +132,34 @@ public class Client implements IOnMessage {
 				id = Integer.valueOf(args.get(0));
 				c = new Color(Integer.valueOf(args.get(2)));
 				t = args.get(3).split(",");
-				x = Double.valueOf(t[0]);
-				y = Double.valueOf(t[1]);
-				w = Double.valueOf(t[2]);
-				h = Double.valueOf(t[3]);
+				x = Integer.valueOf(t[0]);
+				y = Integer.valueOf(t[1]);
+				w = Integer.valueOf(t[2]);
+				h = Integer.valueOf(t[3]);
 				board.addOval(id, c, x, y, w, h);
 				break;
 			case Message.LINE:
 				id = Integer.valueOf(args.get(0));
 				c = new Color(Integer.valueOf(args.get(2)));
 				t = args.get(3).split(",");
-				var x1 = Double.valueOf(t[0]);
-				var y1 = Double.valueOf(t[1]);
-				var x2 = Double.valueOf(t[2]);
-				var y2 = Double.valueOf(t[3]);
+				var x1 = Integer.valueOf(t[0]);
+				var y1 = Integer.valueOf(t[1]);
+				var x2 = Integer.valueOf(t[2]);
+				var y2 = Integer.valueOf(t[3]);
 				board.addLine(id, c, x1, y1, x2, y2);
 				break;
 			case Message.POLYGON:
 				id = Integer.valueOf(args.get(0));
 				c = new Color(Integer.valueOf(args.get(2)));
 				var _x = args.get(3).split(",");
-				ArrayList<Double> xVector = new ArrayList<>();
+				ArrayList<Integer> xVector = new ArrayList<>();
 				for (var i : _x) {
-					xVector.add(Double.valueOf(i));
+					xVector.add(Integer.valueOf(i));
 				}
 				var _y = args.get(4).split(",");
-				ArrayList<Double> yVector = new ArrayList<>();
+				ArrayList<Integer> yVector = new ArrayList<>();
 				for (var i : _y) {
-					yVector.add(Double.valueOf(i));
+					yVector.add(Integer.valueOf(i));
 				}
 				board.addPolygon(id, c, xVector, yVector);
 				break;
@@ -169,8 +169,8 @@ public class Client implements IOnMessage {
 				var style = args.get(3);
 				var size = Integer.valueOf(args.get(4));
 				t = args.get(5).split(",");
-				x = Double.valueOf(t[0]);
-				y = Double.valueOf(t[1]);
+				x = Integer.valueOf(t[0]);
+				y = Integer.valueOf(t[1]);
 				var text = args.get(6);
 				board.addText(id, c, style, size, x, y, text);
 				break;

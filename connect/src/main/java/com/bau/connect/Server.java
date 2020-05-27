@@ -112,28 +112,27 @@ public class Server implements IOnMessage {
 	}
 
 	/* private void sendMessage(Socket client */
-	public void sendPolygon(Integer id, Color c, ArrayList<Double> x, ArrayList<Double> y) {
+	public void sendPolygon(Integer id, Color c, ArrayList<Integer> x, ArrayList<Integer> y) {
 		broadCast(Message.shapePolygon(id, c, x, y));
 	}
 
-	public void sendText(Integer id, Color c, String s, Integer i, Double x, Double y, String text) {
+	public void sendText(Integer id, Color c, String s, Integer i, Integer x, Integer y, String text) {
 		broadCast(Message.shapeText(id, c, s, i, x, y, text));
 	}
 
-	public void sendLine(Integer id, Color c, Double x1, Double y1, Double x2, Double y2) {
+	public void sendLine(Integer id, Color c, Integer x1, Integer y1, Integer x2, Integer y2) {
 		broadCast(Message.shapeLine(id, c, x1, y1, x2, y2));
 	}
 
-	public void sendRect(Integer id, Color c, Double x, Double y, Double w, Double h) {
+	public void sendRect(Integer id, Color c, Integer x, Integer y, Integer w, Integer h) {
 		broadCast(Message.shapeRect(id, c, x, y, w, h));
 	}
 
-	public void sendOval(Integer id, Color c, Double x, Double y, Double w, Double h) {
+	public void sendOval(Integer id, Color c, Integer x, Integer y, Integer w, Integer h) {
 		broadCast(Message.shapeOval(id, c, x, y, w, h));
 	}
 
 	public void broadCast(String msg) {
-		// TODO check if there lecture is not null 
 		lecture.getUsers().forEach((User u) -> {
 			try {
 				DataOutputStream dos = new DataOutputStream(u.socket.getOutputStream());
