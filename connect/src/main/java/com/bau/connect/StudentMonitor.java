@@ -4,23 +4,37 @@ import static com.bau.connect.MyBoard.convertIntegers;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StudentMonitor extends JFrame implements ActionListener {
     public static int ourShapeCounter = 0;
     public static DefaultListModel<String> l1 = new DefaultListModel<>();
-    JPanel ourBoard;
+    MyStudentBoard ourBoard;
     JMenuBar menuBar;
     public static Shapes selectedShape = Shapes.RECTANGLE;
 
     public StudentMonitor() {
         super("Student Monitor");
         setSize(new Dimension(800,600));
-        ourBoard = new MyBoard();
+        ourBoard = new MyStudentBoard();
         this.getContentPane().add(ourBoard);
         setJMenuBar(menuBar);
         JButton button = new JButton("Hand Rise Button");
+        
+        
+         
+        try {
+            var client = new Client("localhost","ekin",ourBoard);
+            client.joinLecture("");
+                    
+        }
+        catch (IOException ex) {
+            Logger.getLogger(StudentMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         ourBoard.add(button);
         setVisible(true);
@@ -79,7 +93,7 @@ class MyStudentShape {
     }
 }
 
-class MyStudentBoard extends JPanel {
+class MyStudentBoard extends JPanel implements Whiteboard{
     private List<MyShape> list = new ArrayList<MyShape>();
     boolean isClickingAlready = false;
     private int counter = 0;
@@ -135,6 +149,41 @@ class MyStudentBoard extends JPanel {
         String lectureTimeCounter = "Time : " + String.valueOf(hour) + ":" + String.valueOf(minutes) + ":" + String.valueOf(seconds);
         g.drawString(s, this.getWidth()-20-g.getFontMetrics().stringWidth(s),20);
         g.drawString(lectureTimeCounter, this.getWidth()-20-g.getFontMetrics().stringWidth(lectureTimeCounter),60);
+    }
+
+    @Override
+    public void addPolygon(Integer id, Color c, ArrayList<Integer> x, ArrayList<Integer> y) {
+       list.add(new MyShape(Shapes.POLYGOM,0,0,0,0));
+        list.get(list.size()-1).x = x;
+        list.get(list.size()-1).y = y;
+       
+    }
+
+    @Override
+    public void addText(Integer id, Color c, String s, Integer i, Integer x, Integer y, String text) {
+        
+    }
+
+    @Override
+    public void addLine(Integer id, Color c, Integer x1, Integer y1, Integer x2, Integer y2) {
+        list.add(new MyShape(Shapes.LINE,x1,y1,x2,y2)) ;
+    }
+
+    @Override
+    public void addRect(Integer id, Color c, Integer x, Integer y, Integer w, Integer h) {
+         list.add(new MyShape(Shapes.RECTANGLE,x,y,x-w,y-h));
+        
+    }
+
+    @Override
+    public void addOval(Integer id, Color c, Integer x, Integer y, Integer w, Integer h) {
+        list.add(new MyShape(Shapes.CIRCLE,x,y,x-w,y-h));
+       
+    }
+
+    @Override
+    public void removeShape(Integer id) {
+      
     }
 }
 
