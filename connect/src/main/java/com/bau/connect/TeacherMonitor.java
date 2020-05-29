@@ -22,6 +22,12 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 
 	public TeacherMonitor() {
 		super("Teacher Monitor");
+		username = JOptionPane.showInputDialog("Enter Your Name");
+
+		String full_name;
+		full_name = "Welcome Teacher" + " " + username;
+
+		JOptionPane.showMessageDialog(null, full_name);
 		setSize(new Dimension(800, 600));
 		JMenu menu = new JMenu("Shapes");
 		ButtonGroup group = new ButtonGroup();
@@ -43,7 +49,6 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 		menu.add(item3);
 		menu.add(item4);
 		lecture = new Lecture("CMP");
-		username = "Default";
 		lecture.setTeacher(username); // TODO Ask for a name 
 
 		ourBoard = new MyBoard();
@@ -123,7 +128,7 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				var newMsg = textArea.getText();
-				server.chatWrite(newMsg);
+				server.chatWrite(username, newMsg);
 				lecture.chat.addEntry(username, newMsg);
 				textArea.setText("");
 			}
@@ -156,6 +161,9 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 				public void run() {
 					while (true) {
 						++counter;
+						if (server != null) {
+							server.sendCounter(counter);
+						}
 						repaint();
 						if (counter == 60) {
 							JOptionPane.showMessageDialog(null, "Lecture is over");
@@ -352,8 +360,6 @@ class Participants extends JFrame {
 	public Participants() {
 		super("Participants");
 		setSize(new Dimension(320, 240));
-//        TeacherMonitor.l1.addElement("Ekin Öcal (Teacher)");
-//        TeacherMonitor.l1.addElement("Ekin Öcal (Student)");
 		JList<String> list = new JList<>(TeacherMonitor.lecture.participants);
 		getContentPane().add(list);
 		setVisible(true);

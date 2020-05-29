@@ -163,8 +163,11 @@ public class Server implements IOnMessage {
 		});
 	}
 
-	public void chatWrite(String text) {
-		var msg = Message.chat("Teacher", text);
+	public void sendCounter(int seconds){
+		broadCast(Message.counter(seconds));
+	}
+	public void chatWrite(String username,String text) {
+		var msg = Message.chat(username, text);
 		broadCast(msg);
 	}
 }

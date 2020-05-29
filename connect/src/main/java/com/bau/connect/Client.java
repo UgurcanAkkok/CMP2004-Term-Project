@@ -20,6 +20,7 @@ public class Client implements IOnMessage {
 	Whiteboard board;
 	String username;
 	Chat chat;
+	int counter = 0;
 
 	public Client(String host, String username, Whiteboard board) throws IOException, UnknownHostException {
 		/*
@@ -106,6 +107,9 @@ public class Client implements IOnMessage {
 			if (!args.get(0).equals(username)) {
 				chat.addEntry(args.get(0), args.get(1));
 			}
+			break;
+		case Message.COUNTER:
+			this.counter = Integer.valueOf(args.get(0));
 			break;
 		case Message.ADDSHAPE:
 			switch (args.get(1)) {

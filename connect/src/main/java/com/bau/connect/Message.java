@@ -42,9 +42,11 @@ public class Message {
 	public static final String REMOVESHAPE = "RemoveShape";
 	public static final String CHAT = "Chat";
 	/** UE11#Chat#USERNAME#MESSAGE BODY#11EU */
+	public static final String COUNTER = "Counter";
+	/** UE11#Counter#SECONDS#11EU */
 
 	public static final List<String> opList = List.of(LECTURE_JOIN, LECTURE_END, LECTURE_LEAVE, RAISE_HAND,
-			LECTURE_START, ADDSHAPE, REMOVESHAPE, JOIN_FAILURE, JOIN_SUCCESS, INVALID_MESSAGE, CHAT);
+			LECTURE_START, ADDSHAPE, REMOVESHAPE, JOIN_FAILURE, JOIN_SUCCESS, INVALID_MESSAGE, CHAT, COUNTER);
 
 	String operation;
 	ArrayList<String> arguments;
@@ -112,7 +114,11 @@ public class Message {
 		var temp = String.join(SEPERATOR, CHAT, user, body);
 		return pack(temp);
 	}
-
+	
+	public static String counter(int seconds){
+		var temp = String.join(SEPERATOR, COUNTER, String.valueOf(seconds));
+		return pack(temp);
+	}
 	public static String invalidMessage(Message message) {
 		var temp = String.join(SEPERATOR, INVALID_MESSAGE, message.toString());
 		return pack(temp);
