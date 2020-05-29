@@ -305,7 +305,7 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE && TeacherMonitor.selectedShape.equals(Shapes.POLYGOM)) {
-				Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+				Point mouseLoc = this.getMousePosition();
 				List<Integer> xArray = list.get(list.size() - 1).x;
 				List<Integer> yArray = list.get(list.size() - 1).y;
 				xArray.set(xArray.size() - 1, mouseLoc.x);
