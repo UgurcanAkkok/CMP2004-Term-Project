@@ -10,7 +10,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class Server implements IOnMessage {
@@ -24,14 +23,34 @@ public class Server implements IOnMessage {
 		socket = new ServerSocket(port);
 	}
 
-	Runnable serve = new Runnable() {
+	Runnable accept = () -> {
+		while (true) {
+			try {
+				Socket client = socket.accept();
+				Serve serve = new Serve(client);
+				Thread serveThread = new Thread(serve);
+				serveThread.start();
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, e.toString());
+			}
+		}
+	};
+
+	class Serve implements Runnable {
+
+		Socket client;
+
+		Serve(Socket client) {
+			this.client = client;
+		}
+
 		@Override
 		public void run() {
 			while (true) {
 				try {
-					Socket client = socket.accept();
 					DataInputStream stream = new DataInputStream(client.getInputStream());
 					String msgString = (String) stream.readUTF();
+					LOGGER.log(Level.INFO, "A message came to the server: {0}", msgString);
 					var msg = new Message(msgString);
 					onMessage(msg, client);
 				} catch (IOException e) {
@@ -40,15 +59,15 @@ public class Server implements IOnMessage {
 					LOGGER.log(Level.SEVERE, null, ex);
 				}
 			}
-
 		}
-	};
 
-	public void run(){
-		Thread serveThread = new Thread(serve);
-		serveThread.start();
 	}
-	
+
+	public void run() {
+		Thread acceptThread = new Thread(accept);
+		acceptThread.start();
+	}
+
 	public void setLecture(Lecture lecture) {
 		this.lecture = lecture;
 	}
@@ -105,6 +124,7 @@ public class Server implements IOnMessage {
 		case Message.RAISE_HAND:
 			username = message.getarguments().get(0);
 			JOptionPane.showMessageDialog(null, username + " raises hand!");
+			break;
 		default:
 			LOGGER.log(Level.WARNING, "Invalid operation code: {0} ", message.operation);
 			break;
@@ -141,5 +161,10 @@ public class Server implements IOnMessage {
 				LOGGER.log(Level.SEVERE, null, ex);
 			}
 		});
+	}
+
+	public void chatWrite(String text) {
+		var msg = Message.chat("Teacher", text);
+		broadCast(msg);
 	}
 }

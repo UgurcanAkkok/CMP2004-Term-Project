@@ -50,10 +50,15 @@ public class Client implements IOnMessage {
 		}
 	};
 
-	void send(String msg) throws IOException {
-		DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-		dos.writeUTF(msg);
-		
+	void send(String msg){
+		DataOutputStream dos;
+		try {
+			dos = new DataOutputStream(socket.getOutputStream());
+			dos.writeUTF(msg);
+			dos.flush();
+		} catch (IOException ex) {
+			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	public Boolean joinLecture(String password) throws IOException {
@@ -81,29 +86,16 @@ public class Client implements IOnMessage {
 			return false;
 		}
 	}
-	
-	public void chatWrite(String text){
+
+	public void chatWrite(String text) {
 		var msg = Message.chat(username, text);
-		for (var i = 0; i < 3; i++){
-			try {
-				send(msg);
-				break;
-			} catch (IOException e){
-				LOGGER.log(Level.SEVERE, e.toString());
-				if (i == 2){
-					LOGGER.warning("Can not send chat message");
-				}
-			}
-		}
+		send(msg);
+		LOGGER.log(Level.INFO, "As client, i sent: {0}", msg);
 	}
-	
-	public void raiseHand(){
+
+	public void raiseHand() {
 		var msg = Message.raiseHand(username);
-		try {
-			send(msg);
-		} catch (IOException ex) {
-			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-		}
+		send(msg);
 	}
 
 	@Override
@@ -111,7 +103,7 @@ public class Client implements IOnMessage {
 		var args = message.getarguments();
 		switch (message.operation) {
 		case Message.CHAT:
-			if (!args.get(0).equals(username)){
+			if (!args.get(0).equals(username)) {
 				chat.addEntry(args.get(0), args.get(1));
 			}
 			break;
