@@ -116,7 +116,6 @@ public class Server implements IOnMessage {
 			username = args.get(0);
 			var body = String.join(Message.SEPERATOR, args.subList(1, args.size()));
 			lecture.chat.addEntry(username, body);
-			/* TODO: send chat messages back to all users */
 			break;
 		case Message.INVALID_MESSAGE:
 			var msg = message.getarguments();

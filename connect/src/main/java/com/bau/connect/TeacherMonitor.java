@@ -49,8 +49,7 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 		menu.add(item3);
 		menu.add(item4);
 		lecture = new Lecture("CMP");
-		lecture.setTeacher(username); // TODO Ask for a name 
-
+		lecture.setTeacher(username);
 		ourBoard = new MyBoard();
 		menuBar = new JMenuBar();
 		menuBar.add(menu);
@@ -109,7 +108,7 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 			setSize(new Dimension(320, 240));
 			chatArea = new JTextArea();
 			textArea = new JTextArea();
-			chatArea.setBackground(Color.red);
+			chatArea.setBackground(Color.gray);
 			chatArea.setEnabled(false);
 			lecture.chat.setChatScreen(chatArea);
 			textArea.addKeyListener(this);
