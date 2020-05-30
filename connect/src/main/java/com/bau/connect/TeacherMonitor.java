@@ -23,7 +23,7 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 	public TeacherMonitor() {
 		super("Teacher Monitor");
 		username = JOptionPane.showInputDialog("Enter Your Name");
-
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		String full_name;
 		full_name = "Welcome Teacher" + " " + username;
 
@@ -56,9 +56,6 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 		this.getContentPane().add(ourBoard);
 		setJMenuBar(menuBar);
 		setVisible(true);
-		new ChatScreen();
-		new Participants();
-
 		while (true) {
 			try {
 				server = new Server();
@@ -73,6 +70,10 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 				}
 			}
 		}
+		
+		new ChatScreen();
+		new Participants();
+
 	}
 
 	@Override
@@ -105,10 +106,12 @@ public class TeacherMonitor extends JFrame implements ActionListener {
 
 		public ChatScreen() {
 			super("Chats");
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setSize(new Dimension(320, 240));
 			chatArea = new JTextArea();
 			textArea = new JTextArea();
 			chatArea.setBackground(Color.gray);
+			chatArea.setForeground(Color.white);
 			chatArea.setEnabled(false);
 			lecture.chat.setChatScreen(chatArea);
 			textArea.addKeyListener(this);
@@ -358,6 +361,7 @@ class Participants extends JFrame {
 
 	public Participants() {
 		super("Participants");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(new Dimension(320, 240));
 		JList<String> list = new JList<>(TeacherMonitor.lecture.participants);
 		getContentPane().add(list);
