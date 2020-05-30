@@ -18,13 +18,13 @@ public class StudentMonitor extends JFrame implements ActionListener {
 	JMenuBar menuBar;
 	public static Shapes selectedShape = Shapes.RECTANGLE;
 	StudentChatScreen chatScreen;
-	Participants participants;
 	Client client;
 	String username;
 
 	public StudentMonitor() {
 		super("Student Monitor");
 		username = JOptionPane.showInputDialog("Enter Your Name");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		String full_name;
 		full_name = "Welcome Dear" + " " + username;
@@ -52,8 +52,6 @@ public class StudentMonitor extends JFrame implements ActionListener {
 		setVisible(true);
 		chatScreen = new StudentChatScreen();
 		chatScreen.chatArea.setText(client.chat.chatText);
-
-		participants = new Participants();
 	}
 
 	@Override
@@ -87,9 +85,11 @@ public class StudentMonitor extends JFrame implements ActionListener {
 		public StudentChatScreen() {
 			super("Chats");
 			setSize(new Dimension(320, 240));
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			chatArea = new JTextArea();
 			textArea = new JTextArea();
-			chatArea.setBackground(Color.red);
+			chatArea.setBackground(Color.gray);
+			chatArea.setForeground(Color.white);
 			chatArea.setEnabled(false);
 			client.chat.setChatScreen(chatArea);
 			textArea.addKeyListener(this);
@@ -217,21 +217,6 @@ public class StudentMonitor extends JFrame implements ActionListener {
 
 		}
 	}
-
-	class StudentParticipants extends JFrame {
-
-		public StudentParticipants() {
-			super("Participants");
-			setSize(new Dimension(320, 240));
-
-			TeacherMonitor.l1.addElement("Ekin Öcal (Teacher)");
-			TeacherMonitor.l1.addElement("Ekin Öcal (Student)");
-			JList<String> list = new JList<>(TeacherMonitor.l1);
-			getContentPane().add(list);
-			setVisible(true);
-		}
-	}
-
 }
 
 enum MyShapes {
